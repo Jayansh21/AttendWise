@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face Recognition Based Attendance System</title>
+    <style>
+        body {
+            background: url('/static/bg.jpg') repeat, #151f2b;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin-top: 50px;
+        }
+        .card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 16px;
+            box-shadow: 0 2px 18px 0 rgba(31,38,135,.3);
+            padding: 30px 28px;
+            min-width: 400px;
+        }
+        .card-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            background: #117da8;
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+            border-radius: 10px 10px 0 0;
+            margin: -30px -28px 22px -28px;
+        }
+        .btn-main {
+            padding: 16px 40px;
+            font-size: 1.1em;
+            background: #2875e8;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-bottom: 23px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-main:hover { background: #174da1; }
+        .btn-add {
+            padding: 11px 26px;
+            background: #25bf59;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 14px;
+        }
+        .btn-add:hover { background: #169842; }
+        .btn-delete {
+            padding: 11px 26px;
+            background: #dc3030;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 14px;
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 11px;
+            font-size: 1.08em;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 15px;
+            text-align: center;
+        }
+        th { background: #e2ebf9; color: #474747; }
+        .form-group {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        label { font-size: 1em; margin-bottom: 4px; font-weight: 500; color: #000;}
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 9px 10px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        /* Attendance meta info */
+        .meta-info {
+            text-align: center;
+            font-size: 1.12em;
+            margin-top: 32px;
+            color: #fff;
+            font-weight: 500;
+            letter-spacing: .5px;
+        }
+        /* Responsive */
+        @media (max-width: 950px) {
+            .container { flex-direction: column; align-items: center; }
+            .card { min-width: 94vw; }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;color:white;margin-top:40px;margin-bottom:5px;font-size:2.7em;text-shadow:0 2px 14px #393f63;">Face Recognition Based Attendance System</h1>
+    <div class="meta-info">
+        {{ datetoday2 }} | 
+        <span id="clock"></span>
+    </div>
+    <script>
+        setInterval(function() {
+            document.getElementById('clock').innerHTML = new Date().toLocaleTimeString();
+        }, 1000);
+    </script>
+
+    {% if mess %}
+    <div style="background:#ffe5e5;color:#b30000;padding:10px 20px; border-radius:5px; margin: 20px auto 0 auto; max-width:650px; font-weight:bold; text-align:center;">
+        {{ mess }}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <!-- Left Card: Attendance -->
+        <div class="card">
+            <div class="card-title">Today's Attendance &#128203;</div>
+            <form action="/start" method="get">
+                <button type="submit" class="btn-main">Take Attendance &#x2714;</button>
+            </form>
+            <table>
+                <tr>
+                    <th>S No</th>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Time</th>
+                </tr>
+                {% for i in range(l) %}
+                <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ names[i] }}</td>
+                    <td>{{ rolls[i] }}</td>
+                    <td>{{ times[i] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- Right Card: Add/Delete User -->
+        <div class="card">
+            <div class="card-title">Add New User &#x2795;</div>
+            <form action="/add" method="post">
+                <div class="form-group">
+                    <label for="newusername">Enter New User Name*</label>
+                    <input type="text" name="newusername" id="newusername" required>
+                </div>
+                <div class="form-group">
+                    <label for="newuserid">Enter New User Id*</label>
+                    <input type="number" name="newuserid" id="newuserid" required min="1">
+                </div>
+                <button type="submit" class="btn-add">Add New User</button>
+            </form>
+            <form action="/delete_all_users" method="post" style="margin-top:10px;">
+                <button type="submit" class="btn-delete">Delete All Users</button>
+            </form>
+            <div style="margin-top:28px;color:white;font-size:1.08em;letter-spacing:1px;">
+                Total Users in Database: <b>{{ totalreg }}</b>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
