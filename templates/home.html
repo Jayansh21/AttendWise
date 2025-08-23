@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Face Recognition Based Attendance System</title>
+    <title>AttendWise</title>
     <style>
         body {
             background: url('/static/bg.jpg') repeat, #151f2b;
@@ -10,19 +10,44 @@
             margin: 0;
             padding: 0;
         }
+        .main-title {
+            text-align: center;
+            font-size: 3.2em;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: .5px;
+            margin-top: 42px;
+            text-shadow: 0 4px 24px #191c36, 0 2px 7px #1864ab;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+        }
+        .date-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #117da8;
+            color: #fff;
+            font-size: 1.20em;
+            font-weight: 600;
+            border-radius: 13px;
+            width: max-content;
+            margin: 16px auto 32px auto;
+            padding: 10px 35px;
+            box-shadow: 0 1px 9px 0 rgba(31,38,135,.07);
+            letter-spacing: .3px;
+        }
         .container {
             display: flex;
             justify-content: center;
             align-items: flex-start;
             gap: 40px;
-            margin-top: 50px;
         }
         .card {
-            background: rgba(255,255,255,0.15);
+            background: rgba(30,30,40,0.85);
             border-radius: 16px;
             box-shadow: 0 2px 18px 0 rgba(31,38,135,.3);
             padding: 30px 28px;
             min-width: 400px;
+            color: #f7fafc;
         }
         .card-title {
             font-size: 1.3em;
@@ -45,66 +70,102 @@
             margin-bottom: 23px;
             font-weight: bold;
             transition: background 0.2s;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         .btn-main:hover { background: #174da1; }
-        .btn-add {
+        .btn-add, .btn-delete {
             padding: 11px 26px;
-            background: #25bf59;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 1em;
-            margin-top: 14px;
+            margin-top: 0;
+            font-weight: 600;
         }
+        .btn-add { background: #25bf59;}
         .btn-add:hover { background: #169842; }
-        .btn-delete {
-            padding: 11px 26px;
-            background: #dc3030;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-top: 14px;
-            display: block;
+        .btn-delete { background: #dc3030; }
+        .btn-delete:hover { background: #a01818; }
+        .adduser-row {
+            display: flex;
+            flex-direction: row;
+            gap: 18px;
+            margin-top: 16px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 11px;
             font-size: 1.08em;
+            background: rgba(255,255,255,0.06);
+            color: #f3f3f3;
         }
         th, td {
-            border: 1px solid #ccc;
+            border: 1px solid #aaa;
             padding: 8px 15px;
             text-align: center;
+            color: #f3f3f3;
         }
-        th { background: #e2ebf9; color: #474747; }
+        th { background: rgba(255,255,255,0.20); color: #fff; }
         .form-group {
             margin-bottom: 18px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
         }
-        label { font-size: 1em; margin-bottom: 4px; font-weight: 500; color: #000;}
+        label { font-size: 1em; margin-bottom: 4px; font-weight: 500; color: #fff;}
         input[type="text"], input[type="number"] {
             width: 100%;
             padding: 9px 10px;
             border: 1px solid #bbb;
             border-radius: 6px;
             font-size: 1em;
+            background: rgba(255,255,255,0.82);
+            color: #232323;
         }
-        /* Attendance meta info */
-        .meta-info {
-            text-align: center;
-            font-size: 1.12em;
-            margin-top: 32px;
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: 2px solid #14d3c4;
+        }
+        .msg-modal-bg {
+            display: none;
+            position: fixed; 
+            left: 0; right: 0; top: 0; bottom: 0; 
+            background: rgba(0,0,0,0.40);
+            z-index: 10000;
+        }
+        .msg-modal {
+            background: #272b2f;
             color: #fff;
-            font-weight: 500;
-            letter-spacing: .5px;
+            padding: 33px 45px 18px 45px;
+            border-radius: 16px;
+            font-size: 1.13em;
+            box-shadow: 0 4px 38px 7px rgba(50,76,113,0.29);
+            max-width: 430px;
+            margin: 120px auto 0 auto;
+            text-align: center;
+            position: relative;
         }
-        /* Responsive */
+        .ok-btn {
+            padding: 8px 26px;
+            background: #1698e5;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.07em;
+            margin-top: 24px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .ok-btn:hover { background: #1666a5; }
+        .total-users-text {
+            margin-top:28px;
+            font-size:1.08em;
+            letter-spacing:1px; 
+            color: white;
+        }
         @media (max-width: 950px) {
             .container { flex-direction: column; align-items: center; }
             .card { min-width: 94vw; }
@@ -112,9 +173,9 @@
     </style>
 </head>
 <body>
-    <h1 style="text-align:center;color:white;margin-top:40px;margin-bottom:5px;font-size:2.7em;text-shadow:0 2px 14px #393f63;">Face Recognition Based Attendance System</h1>
-    <div class="meta-info">
-        {{ datetoday2 }} | 
+    <div class="main-title">AttendWise</div>
+    <div class="date-block">
+        <span id="todaydate">{{ datetoday2 }}</span> | 
         <span id="clock"></span>
     </div>
     <script>
@@ -124,8 +185,11 @@
     </script>
 
     {% if mess %}
-    <div style="background:#ffe5e5;color:#b30000;padding:10px 20px; border-radius:5px; margin: 20px auto 0 auto; max-width:650px; font-weight:bold; text-align:center;">
-        {{ mess }}
+    <div id="messageModalBg" class="msg-modal-bg" style="display:block;">
+        <div class="msg-modal">
+            {{ mess }}<br>
+            <button class="ok-btn" onclick="document.getElementById('messageModalBg').style.display='none'">OK</button>
+        </div>
     </div>
     {% endif %}
 
@@ -156,8 +220,8 @@
 
         <!-- Right Card: Add/Delete User -->
         <div class="card">
-            <div class="card-title">Add New User &#x2795;</div>
-            <form action="/add" method="post">
+            <div class="card-title">Add New User &#43;</div>
+            <form action="/add" method="post" id="addUserForm">
                 <div class="form-group">
                     <label for="newusername">Enter New User Name*</label>
                     <input type="text" name="newusername" id="newusername" required>
@@ -166,15 +230,25 @@
                     <label for="newuserid">Enter New User Id*</label>
                     <input type="number" name="newuserid" id="newuserid" required min="1">
                 </div>
-                <button type="submit" class="btn-add">Add New User</button>
+                <div class="adduser-row">
+                    <button type="submit" class="btn-add">Add New User</button>
+                    <!-- Keep delete users button in same row, separate form for action -->
+                    <form action="/delete_all_users" method="post" id="deleteForm" style="margin:0;">
+                        <button type="submit" class="btn-delete">Delete All Users</button>
+                    </form>
+                </div>
             </form>
-            <form action="/delete_all_users" method="post" style="margin-top:10px;">
-                <button type="submit" class="btn-delete">Delete All Users</button>
-            </form>
-            <div style="margin-top:28px;color:white;font-size:1.08em;letter-spacing:1px;">
+            <div class="total-users-text">
                 Total Users in Database: <b>{{ totalreg }}</b>
             </div>
         </div>
     </div>
+    <script>
+      // Fix for nested form—in HTML forms can't nest, so we handle delete separately:
+      document.getElementById('deleteForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        this.submit();
+      });
+    </script>
 </body>
 </html>
