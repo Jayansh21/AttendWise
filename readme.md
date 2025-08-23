@@ -5,7 +5,7 @@
 - [Features](#features)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Installation][def]
+  - [Installation][#installation]
 - [Usage](#usage)
 - [Contact](#contact)
 - [Acknowledgments](#acknowledgments)
@@ -52,8 +52,8 @@ Make sure you have the following installed:
 
 1. **Clone the repository:**
 
-git clone https://github.com/yourusername/attendwise.git
-cd attendwise
+-git clone https://github.com/yourusername/attendwise.git
+-cd attendwise
 
 2. **(Optional) Create virtual environment and activate it:**
 
