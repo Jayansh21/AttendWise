@@ -87,7 +87,7 @@ flask run
 ## Contact
 
 * Jayansh Jain - jjayansh1021@gmail.com
-* Project Link: [https://github.com/Jayansh21/attendwise](https://github.com/yourusername/attendwise)
+* Project Link: [https://github.com/Jayansh21/AttendWise](https://github.com/Jayansh21/AttendWise)
 
 ---
 
