@@ -7,204 +7,81 @@
         body {
             background: url('/static/bg.jpg') repeat, #151f2b;
             font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
         }
-        .main-title {
-            text-align: center;
-            font-size: 3.2em;
-            font-weight: bold;
-            color: #fff;
-            letter-spacing: .5px;
-            margin-top: 42px;
-            text-shadow: 0 4px 24px #191c36, 0 2px 7px #1864ab;
-        }
-        .date-block {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #117da8;
-            color: #fff;
-            font-size: 1.20em;
-            font-weight: 600;
-            border-radius: 13px;
-            width: max-content;
-            margin: 16px auto 32px auto;
-            padding: 10px 36px 10px 29px;
-            box-shadow: 0 1px 9px 0 rgba(31,38,135,.07);
-            letter-spacing: .3px;
-        }
-        .date-item {
-            margin-right: 25px;
-        }
-        .time-item {
-            margin-left: 25px;
-            padding-left: 25px;
-            border-left: 2px solid rgba(255,255,255,0.3);
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 40px;
-        }
-        .card {
-            background: rgba(30,30,40,0.85);
-            border-radius: 16px;
-            box-shadow: 0 2px 18px 0 rgba(31,38,135,.3);
-            padding: 30px 28px;
-            min-width: 400px;
-            color: #f7fafc;
-        }
-        .card-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            background: #117da8;
-            color: #fff;
-            padding: 12px;
-            text-align: left;
-            border-radius: 10px 10px 0 0;
-            margin: -30px -28px 22px -28px;
-        }
-        .btn-main {
-            padding: 16px 40px;
+        .main-title { text-align: center; font-size: 3.2em; font-weight: bold; color: #fff; letter-spacing: .5px; margin-top: 42px; text-shadow: 0 4px 24px #191c36, 0 2px 7px #1864ab;}
+        .date-block { display: flex; justify-content: center; align-items: center; background: #117da8; color: #fff; font-size: 1.20em; font-weight: 600; border-radius: 13px; width: max-content; margin: 16px auto 32px auto; padding: 10px 36px 10px 29px; box-shadow: 0 1px 9px 0 rgba(31,38,135,.07); letter-spacing: .3px;}
+        .date-item { margin-right: 25px; }
+        .time-item { margin-left: 25px; padding-left: 25px; border-left: 2px solid rgba(255,255,255,0.3); }
+        .container { display: flex; justify-content: center; align-items: flex-start; gap: 40px; }
+        .card { background: rgba(30,30,40,0.85); border-radius: 16px; box-shadow: 0 2px 18px 0 rgba(31,38,135,.3); padding: 30px 28px; min-width: 400px; color: #f7fafc;}
+        .card-title { font-size: 1.3em; font-weight: bold; background: #117da8; color: #fff; padding: 12px; text-align: left; border-radius: 10px 10px 0 0; margin: -30px -28px 22px -28px;}
+        .form-group { margin-bottom: 19px; }
+        label { font-size: 1.05em; font-weight: 500; margin-bottom: 6px; display: block; color: #fff;}
+        input[type="text"], input[type="number"] { width: 100%; padding: 11px 11px; border: 1px solid #8ba5b3; border-radius: 6px; font-size: 1.08em; margin-bottom: 1px; margin-top: 3px; background: rgba(255,255,255,0.92); color: #232323; }
+        input[type="text"]:focus, input[type="number"]:focus { outline: 2px solid #14d3c4; }
+        .adduser-row { display: flex; gap: 16px; margin-top: 16px; }
+        .adduser-row form { width: 50%; margin: 0; display: flex; }
+        .btn-half { width: 100%; font-size: 1.12em; padding: 13px 0; border-radius: 6px; border: none; cursor: pointer; font-weight: 600;}
+        .btn-add { background: #25bf59; color: white; }
+        .btn-add:hover { background: #169842; }
+        .btn-delete { background: #dc3030; color: white; }
+        .btn-delete:hover { background: #a01818;}
+        .btn-show-users { background: #117da8; color: #fff; font-weight: 600; font-size: 1.12em; border: none; border-radius: 6px; padding: 12px 0; width: 100%; box-shadow: 0 1px 7px 0 rgba(31,38,135,.13); margin-top: 18px; cursor: pointer; display: block; }
+        .btn-show-users:hover {background: #155799;}
+        table { width: 100%; border-collapse: collapse; margin-top: 13px; font-size: 1.08em; background: rgba(255,255,255,0.06); color: #f3f3f3;}
+        th, td { border: 1px solid #aaa; padding: 9px 15px; text-align: center; }
+        th { background: rgba(16,117,168,0.95); color: #fff; font-size: 1.07em;}
+        tr:nth-child(even) { background: rgba(255,255,255,0.05);}
+        tr:nth-child(odd)  { background: rgba(255,255,255,0.11);}
+        .take-attendance-container { display: flex; justify-content: center; margin-top: 25px; margin-bottom: 25px; }
+        .btn-main { padding: 18px 60px; font-size: 1.25em; background: #2875e8; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: background 0.2s, box-shadow 0.2s; margin: 0 auto; box-shadow: 0 4px 18px 0 rgba(31,38,135,.13);}
+        .btn-main:hover { background: #174da1; box-shadow: 0 8px 26px 0 rgba(31,38,135,.17);}
+        .msg-modal-bg { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0,0.40); z-index: 10000;}
+        .msg-modal { background: #272b2f; color: #fff; padding: 33px 45px 28px 45px; border-radius: 16px; font-size: 1.13em; box-shadow: 0 4px 38px 7px rgba(50,76,113,0.29); max-width: 430px; margin: 120px auto 0 auto; text-align: center; }
+        .ok-btn, .modal-delete-btn {
+            padding: 11px 38px;
             font-size: 1.1em;
-            background: #2875e8;
-            color: #fff;
             border: none;
-            border-radius: 7px;
-            cursor: pointer;
-            margin-bottom: 23px;
-            font-weight: bold;
-            transition: background 0.2s;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .btn-main:hover { background: #174da1; }
-        .adduser-row {
-            display: flex;
-            flex-direction: row;
-            gap: 2%;
-            margin-top: 16px;
-        }
-        .adduser-row form {
-            width: 50%;
-            margin: 0;
-            display: flex;
-        }
-        .btn-half {
-            width: 100%;
-            font-size: 1.12em;
-            padding: 13px 0;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
+            border-radius: 8px;
             font-weight: 600;
-        }
-        .btn-add { 
-            background: #25bf59; 
-            color: white;
-        }
-        .btn-add:hover { background: #169842 }
-        .btn-delete { 
-            background: #dc3030; 
-            color: white;
-        }
-        .btn-delete:hover { background: #a01818; }
-        .btn-show-users {
-            background: #117da8;
-            color: #fff;
-            font-weight: 600;
-            font-size: 1.12em;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 0;
-            width: 100%;
-            box-shadow: 0 1px 7px 0 rgba(31,38,135,.13);
-            margin-top: 18px;
+            margin: 18px 14px 0 0;
             cursor: pointer;
-            display: block;
+            display: inline-block;
         }
-        .btn-show-users:hover {
-            background: #155799;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 11px;
-            font-size: 1.08em;
-            background: rgba(255,255,255,0.06);
-            color: #f3f3f3;
-        }
-        th, td {
-            border: 1px solid #aaa;
-            padding: 8px 15px;
-            text-align: center;
-            color: #f3f3f3;
-        }
-        th { background: rgba(255,255,255,0.20); color: #fff; }
-        .form-group {
-            margin-bottom: 18px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        label { font-size: 1em; margin-bottom: 4px; font-weight: 500; color: #fff;}
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 9px 10px;
-            border: 1px solid #bbb;
-            border-radius: 6px;
-            font-size: 1em;
-            background: rgba(255,255,255,0.82);
-            color: #232323;
-        }
-        input[type="text"]:focus, input[type="number"]:focus {
-            outline: 2px solid #14d3c4;
-        }
-        .msg-modal-bg {
-            display: none;
-            position: fixed; 
-            left: 0; right: 0; top: 0; bottom: 0; 
-            background: rgba(0,0,0,0.40);
-            z-index: 10000;
-        }
-        .msg-modal {
-            background: #272b2f;
-            color: #fff;
-            padding: 33px 45px 18px 45px;
-            border-radius: 16px;
-            font-size: 1.13em;
-            box-shadow: 0 4px 38px 7px rgba(50,76,113,0.29);
-            max-width: 430px;
-            margin: 120px auto 0 auto;
-            text-align: center;
-            position: relative;
-        }
-        .ok-btn {
-            padding: 8px 26px;
-            background: #1698e5;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.07em;
-            margin-top: 24px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .ok-btn:hover { background: #1666a5; }
-        .total-users-text {
-            margin-top:28px;
-            font-size:1.08em;
-            letter-spacing:1px; 
-            color: white;
-        }
-        @media (max-width: 950px) {
-            .container { flex-direction: column; align-items: center; }
-            .card { min-width: 94vw; }
-        }
+        .modal-delete-btn { background: #dc3030; color:white;}
+        .modal-delete-btn:hover { background: #a01818;}
+        .ok-btn { background: #1698e5; color: white;}
+        .ok-btn:hover { background: #1666a5;}
+        .total-users-text { margin-top:28px; font-size:1.08em; letter-spacing:1px; color: white;}
+        @media (max-width: 950px) {.container { flex-direction: column; align-items: center; } .card { min-width: 94vw; }}
     </style>
+    <script>
+        function openDeleteModal() {
+            document.getElementById('deleteUserModal').style.display = 'block';
+            var list = document.getElementById('userCheckboxList');
+            list.innerHTML = '';
+            var users = {{ users_json|safe }};
+            for (var i = 0; i < users.length; i++) {
+                var val = users[i];
+                list.innerHTML += '<label style="font-size:1.07em; margin: 7px 0; display: block;"><input style="margin-right: 8px;" type="checkbox" name="users_to_delete" value="' + val + '"> ' + val.replace('_', ' (Roll: ') + ')' + '</label>';
+            }
+        }
+        function closeDeleteModal() {
+            document.getElementById('deleteUserModal').style.display = 'none';
+        }
+        function selectAllUsers(checked) {
+            var cbs = document.querySelectorAll('#userCheckboxList input[type=checkbox]');
+            for (var i = 0; i < cbs.length; i++) cbs[i].checked = checked;
+        }
+        window.onload = function() {
+            var delBtn = document.getElementById('openDeleteModal');
+            if (delBtn) delBtn.onclick = openDeleteModal;
+            var selAll = document.getElementById('selectAllUsers');
+            if (selAll) selAll.onclick = function() { selectAllUsers(this.checked); };
+        };
+        setInterval(function() { document.getElementById('clock').innerHTML = new Date().toLocaleTimeString(); }, 1000);
+    </script>
 </head>
 <body>
     <div class="main-title">AttendWise</div>
@@ -212,12 +89,6 @@
         <span class="date-item" id="todaydate">{{ datetoday2 }}</span>
         <span class="time-item" id="clock"></span>
     </div>
-    <script>
-        setInterval(function() {
-            document.getElementById('clock').innerHTML = new Date().toLocaleTimeString();
-        }, 1000);
-    </script>
-
     {% if mess %}
     <div id="messageModalBg" class="msg-modal-bg" style="display:block;">
         <div class="msg-modal">
@@ -226,14 +97,29 @@
         </div>
     </div>
     {% endif %}
-
+    <!-- Delete User Modal -->
+    <div id="deleteUserModal" class="msg-modal-bg" style="display:none;">
+        <div class="msg-modal">
+            <h3 style="margin-bottom: 18px;">Delete User(s)</h3>
+            <form id="deleteUserForm" method="post" action="/delete_selected_users">
+                <label style="margin-bottom: 13px; font-size: 1.08em;"><input type="checkbox" id="selectAllUsers" style="margin-right: 8px;"/> Select All</label>
+                <div id="userCheckboxList" style="margin-bottom:8px;"></div>
+                <div style="display:flex; justify-content:center; gap:16px; margin-top: 16px;">
+                    <button type="submit" class="modal-delete-btn">Delete Selected</button>
+                    <button type="button" class="ok-btn" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="container">
         <!-- Left Card: Attendance -->
         <div class="card">
             <div class="card-title">Today's Attendance &#128203;</div>
-            <form action="/start" method="get">
-                <button type="submit" class="btn-main">Take Attendance &#x2714;</button>
-            </form>
+            <div class="take-attendance-container">
+                <form action="/start" method="get">
+                    <button type="submit" class="btn-main">Take Attendance &#x2714;</button>
+                </form>
+            </div>
             <table>
                 <tr>
                     <th>S No</th>
@@ -251,7 +137,6 @@
                 {% endfor %}
             </table>
         </div>
-
         <!-- Right Card: Add/Delete/Show Users -->
         <div class="card">
             <div class="card-title">Add New User &#43;</div>
@@ -265,12 +150,8 @@
                     <input type="number" name="newuserid" id="newuserid" required min="1">
                 </div>
                 <div class="adduser-row">
-                    <form action="/add" method="post" style="width:50%;display:flex;margin:0;">
-                        <button type="submit" class="btn-add btn-half">Add New User</button>
-                    </form>
-                    <form action="/delete_all_users" method="post" style="width:50%;display:flex;margin:0;">
-                        <button type="submit" class="btn-delete btn-half">Delete All Users</button>
-                    </form>
+                    <button type="submit" class="btn-add btn-half">Add New User</button>
+                    <button type="button" id="openDeleteModal" class="btn-delete btn-half" style="margin-left:16px;">Delete User(s)</button>
                 </div>
             </form>
             <form action="/showusers" method="get" style="margin-top:18px;">

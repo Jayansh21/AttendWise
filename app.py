@@ -1,26 +1,20 @@
 import cv2
 import os
 import shutil
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from datetime import date, datetime
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 import pandas as pd
 import joblib
+import json
 
-# Defining Flask App
 app = Flask(__name__)
-
 nimgs = 30
-
-# Saving Date today in 2 different formats
 datetoday = date.today().strftime("%m_%d_%y")
 datetoday2 = date.today().strftime("%d-%B-%Y")
-
-# Initializing VideoCapture object to access WebCam
 face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
-# If these directories don't exist, create them
 if not os.path.isdir('Attendance'):
     os.makedirs('Attendance')
 if not os.path.isdir('static'):
@@ -32,11 +26,9 @@ if f'Attendance-{datetoday}.csv' not in os.listdir('Attendance'):
     with open(f'Attendance/Attendance-{datetoday}.csv', 'w') as f:
         f.write('Name,Roll,Time')
 
-# get a number of total registered users
 def totalreg():
     return len(os.listdir('static/faces'))
 
-# extract the face from an image
 def extract_faces(img):
     try:
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -45,8 +37,7 @@ def extract_faces(img):
     except:
         return []
 
-# Identify face using ML model with a confidence threshold
-def identify_face(facearray, threshold=0.6):
+def identify_face(facearray, threshold=0.75):  # Increased threshold!
     modelpath = 'static/face_recognition_model.pkl'
     if not os.path.exists(modelpath):
         return "Not in Database"
@@ -60,7 +51,6 @@ def identify_face(facearray, threshold=0.6):
     else:
         return "Not in Database"
 
-# A function which trains the model on all the faces available in faces folder
 def train_model():
     faces = []
     labels = []
@@ -73,13 +63,11 @@ def train_model():
             labels.append(user)
     faces = np.array(faces)
     if len(faces) == 0:
-        # No data to train
         return
     knn = KNeighborsClassifier(n_neighbors=5)
     knn.fit(faces, labels)
     joblib.dump(knn, 'static/face_recognition_model.pkl')
 
-# Extract info from today's attendance file in attendance folder
 def extract_attendance():
     df = pd.read_csv(f'Attendance/Attendance-{datetoday}.csv')
     names = df['Name']
@@ -88,7 +76,6 @@ def extract_attendance():
     l = len(df)
     return names, rolls, times, l
 
-# Add Attendance of a specific user
 def add_attendance(name):
     username = name.split('_')[0]
     userid = name.split('_')[1]
@@ -98,7 +85,6 @@ def add_attendance(name):
         with open(f'Attendance/Attendance-{datetoday}.csv', 'a') as f:
             f.write(f'\n{username},{userid},{current_time}')
 
-## A function to get names and roll numbers of all users
 def getallusers():
     userlist = os.listdir('static/faces')
     names = []
@@ -110,7 +96,6 @@ def getallusers():
         rolls.append(roll)
     return userlist, names, rolls, l
 
-## A function to delete a user folder
 def deletefolder(duser):
     pics = os.listdir(duser)
     for i in pics:
@@ -118,28 +103,35 @@ def deletefolder(duser):
     os.rmdir(duser)
 
 ################## ROUTING FUNCTIONS #########################
-
-# Our main page
 @app.route('/')
 def home():
     names, rolls, times, l = extract_attendance()
+    userlist, _, _, _ = getallusers()
     mess = request.args.get('mess')
     return render_template('home.html', names=names, rolls=rolls, times=times, l=l,
-                           totalreg=totalreg(), datetoday2=datetoday2, mess=mess)
+        totalreg=totalreg(), datetoday2=datetoday2, mess=mess,
+        users_json=json.dumps(userlist))
 
-## List users page
-@app.route('/listusers')
-def listusers():
+@app.route('/showusers')
+def showusers():
     userlist, names, rolls, l = getallusers()
-    return render_template('listusers.html', userlist=userlist, names=names, rolls=rolls, l=l,
-                           totalreg=totalreg(), datetoday2=datetoday2)
+    return render_template('listusers.html', names=names, rolls=rolls, l=l, datetoday2=datetoday2)
 
-## Delete a single user
+@app.route('/delete_selected_users', methods=['POST'])
+def delete_selected_users():
+    users_to_delete = request.form.getlist('users_to_delete')
+    for u in users_to_delete:
+        folder = os.path.join('static/faces', u)
+        if os.path.isdir(folder):
+            shutil.rmtree(folder)
+    if os.path.exists('static/face_recognition_model.pkl'):
+        train_model()
+    return redirect('/')
+
 @app.route('/deleteuser', methods=['GET'])
 def deleteuser():
     duser = request.args.get('user')
     deletefolder('static/faces/' + duser)
-    # If all users deleted, remove model
     if os.listdir('static/faces/') == []:
         if os.path.exists('static/face_recognition_model.pkl'):
             os.remove('static/face_recognition_model.pkl')
@@ -149,33 +141,31 @@ def deleteuser():
         pass
     userlist, names, rolls, l = getallusers()
     return render_template('listusers.html', userlist=userlist, names=names, rolls=rolls, l=l,
-                           totalreg=totalreg(), datetoday2=datetoday2)
+        totalreg=totalreg(), datetoday2=datetoday2)
 
-# Delete all users (new feature!)
 @app.route('/delete_all_users', methods=['POST'])
 def delete_all_users():
     faces_dir = 'static/faces'
     if os.path.isdir(faces_dir):
         for folder in os.listdir(faces_dir):
             shutil.rmtree(os.path.join(faces_dir, folder))
-    # Remove trained model if exists
     model_path = 'static/face_recognition_model.pkl'
     if os.path.exists(model_path):
         os.remove(model_path)
     names, rolls, times, l = extract_attendance()
     mess = "All user data deleted successfully."
     return render_template('home.html', names=names, rolls=rolls, times=times, l=l,
-                           totalreg=totalreg(), datetoday2=datetoday2, mess=mess)
+        totalreg=totalreg(), datetoday2=datetoday2, mess=mess,
+        users_json=json.dumps([]))
 
-# Our main Face Recognition functionality.
-# This function will run when we click on Take Attendance Button.
 @app.route('/start', methods=['GET'])
 def start():
     names, rolls, times, l = extract_attendance()
     if 'face_recognition_model.pkl' not in os.listdir('static'):
         return render_template('home.html', names=names, rolls=rolls, times=times, l=l,
-                               totalreg=totalreg(), datetoday2=datetoday2,
-                               mess='There is no trained model in the static folder. Please add a new face to continue.')
+            totalreg=totalreg(), datetoday2=datetoday2,
+            mess='There is no trained model in the static folder. Please add a new face to continue.',
+            users_json=json.dumps([]))
     cap = cv2.VideoCapture(0)
     while True:
         ret, frame = cap.read()
@@ -189,21 +179,20 @@ def start():
             face = cv2.resize(frame[y:y + h, x:x + w], (50, 50))
             identified_person = identify_face(face.reshape(1, -1))
             cv2.putText(frame, identified_person, (x + 5, y - 5),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            # Add attendance only for known users
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
             if identified_person != "Not in Database":
                 add_attendance(identified_person)
         cv2.imshow('Attendance', frame)
-        if cv2.waitKey(1) == 27:  # ESC to exit
+        key = cv2.waitKey(1) & 0xFF
+        if key == 27 or key == ord('q'):
             break
     cap.release()
     cv2.destroyAllWindows()
     names, rolls, times, l = extract_attendance()
+    userlist, _, _, _ = getallusers()
     return render_template('home.html', names=names, rolls=rolls, times=times, l=l,
-                           totalreg=totalreg(), datetoday2=datetoday2)
+        totalreg=totalreg(), datetoday2=datetoday2, users_json=json.dumps(userlist))
 
-# A function to add a new user.
-# This function will run when we add a new user.
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     newusername = request.form['newusername']
@@ -219,16 +208,16 @@ def add():
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 20), 2)
             cv2.putText(frame, f'Images Captured: {i}/{nimgs}', (30, 30),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 20), 2, cv2.LINE_AA)
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 20), 2, cv2.LINE_AA)
             if j % 5 == 0:
                 name = newusername + '_' + str(i) + '.jpg'
                 cv2.imwrite(userimagefolder + '/' + name, frame[y:y + h, x:x + w])
                 i += 1
             j += 1
-            if j == nimgs * 5:
+            if j == nimgs * 5 or i >= nimgs:
                 break
         cv2.imshow('Adding new User', frame)
-        if cv2.waitKey(1) == 27:
+        if cv2.waitKey(1) == 27 or cv2.waitKey(1) & 0xFF == ord('q'):
             break
         if i >= nimgs:
             break
@@ -237,9 +226,9 @@ def add():
     print('Training Model')
     train_model()
     names, rolls, times, l = extract_attendance()
+    userlist, _, _, _ = getallusers()
     return render_template('home.html', names=names, rolls=rolls, times=times, l=l,
-                           totalreg=totalreg(), datetoday2=datetoday2)
+        totalreg=totalreg(), datetoday2=datetoday2, users_json=json.dumps(userlist))
 
-# Our main function which runs the Flask App
 if __name__ == '__main__':
     app.run(debug=True)
