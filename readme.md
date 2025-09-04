@@ -14,8 +14,8 @@
 [📋 Features](#-features) •
 [🛠️ Installation](#️-installation) •
 [🎯 Usage](#-usage) •
-[📁 Project Structure](#-project-structure) •
 [🏗️ Tech Stack](#️-tech-stack) •
+[📁 Project Structure](#-project-structure) •
 [🤝 Contributing](#-contributing) •
 [📄 License](#-license) •
 [🙏 Acknowledgments](#-acknowledgments) •
