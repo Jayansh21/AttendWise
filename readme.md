@@ -2,7 +2,6 @@
 
 <div align="center">
 
-![AttendWise Logo](https://img.shields.io/badge/AttendWise-Face%20Recognition-blue?style=for-the-badge&logo=opencv)
 
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-2.0+-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
@@ -14,7 +13,6 @@
 [📋 Features](#-features) •
 [🛠️ Installation](#️-installation) •
 [🎯 Usage](#-usage) •
-[📸 Screenshots](#-screenshots) •
 [🤝 Contributing](#-contributing)
 
 </div>
@@ -121,30 +119,6 @@ Make sure you have the following installed on your system:
 
 ---
 
-## 📸 Screenshots
-
-### 🏠 Home Dashboard
-![Home Dashboard](screenshots/dashboard.png)
-*Clean and intuitive main dashboard with easy navigation*
-
-### 👤 User Registration
-![User Registration](screenshots/registration.png)
-*Simple user registration process with face capture*
-
-### 📷 Face Recognition
-![Face Recognition](screenshots/recognition.png)
-*Real-time face recognition for attendance marking*
-
-### 👥 User Management
-![User Management](screenshots/users.png)
-*Comprehensive user management interface*
-
-### 📊 Attendance Reports
-![Attendance Reports](screenshots/reports.png)
-*Detailed attendance reports and analytics*
-
----
-
 ## 🏗️ Tech Stack
 
 <div align="center">
@@ -167,11 +141,10 @@ AttendWise/
 ├── 📁 static/                    # Static files (CSS, JS, images)
 ├── 📁 templates/                 # HTML templates
 ├── 📁 Attendance/                # Generated attendance CSV files
-├── 📁 screenshots/               # Project screenshots
 ├── 📄 app.py                     # Main Flask application
 ├── 📄 requirements.txt           # Python dependencies
 ├── 📄 README.md                  # Project documentation
-└── 📄 .gitignore                # Git ignore rules
+└── 📄 .gitignore                 # Git ignore rules
 ```
 
 ---
@@ -230,6 +203,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### 🌟 If you found this project helpful, please give it a star! ⭐
 
-**Made with ❤️ and lots of ☕**
+**Made with lots of ❤️**
 
 </div>
