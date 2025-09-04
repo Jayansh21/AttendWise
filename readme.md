@@ -10,10 +10,16 @@
 
 **🚀 Revolutionize attendance tracking with AI-powered face recognition technology**
 
+[🌟 Overview](#-overview) •
 [📋 Features](#-features) •
 [🛠️ Installation](#️-installation) •
 [🎯 Usage](#-usage) •
-[🤝 Contributing](#-contributing)
+[📁 Project Structure](#-project-structure) •
+[🏗️ Tech Stack](#️-tech-stack) •
+[🤝 Contributing](#-contributing) •
+[📄 License](#-license) •
+[🙏 Acknowledgments](#-acknowledgments) •
+[👨‍💻 Author](#-author)
 
 </div>
 
@@ -144,6 +150,7 @@ AttendWise/
 ├── 📄 app.py                     # Main Flask application
 ├── 📄 requirements.txt           # Python dependencies
 ├── 📄 README.md                  # Project documentation
+├── 📄 LICENSE                    # License file
 └── 📄 .gitignore                 # Git ignore rules
 ```
 
